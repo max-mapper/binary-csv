@@ -6,7 +6,7 @@ module.exports = CSV
 var quote = bops.from('"')[0] // 22
 
 function CSV(lineDelim, cellDelim) {
-  if (!(this instanceof CSV)) return new CSV(lineDelim)
+  if (!(this instanceof CSV)) return new CSV(lineDelim, cellDelim)
   var newline = bops.from(lineDelim || os.EOL)
   var comma = bops.from(cellDelim || ',')[0]
   var buffered
