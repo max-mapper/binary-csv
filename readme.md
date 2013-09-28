@@ -4,7 +4,7 @@ A fast CSV parser written in javascript.
 
 [![NPM](https://nodei.co/npm/binary-csv.png)](https://nodei.co/npm/binary-csv/)
 
-Consumes `Buffer` in node or `Uint8Array` in the browser (thanks to [bops](https://github.com/chrisdickinson/bops)). Whereas most CSVs parse `String` data, this library never converts binary data into non-binary data. It's fast because it never creates Numbers, Strings, Arrays or Objects -- only binary representations of the line and cell values in the CSV.
+Consumes `Buffer` in node or `Uint8Array` in the browser (thanks to [bops](https://github.com/chrisdickinson/bops)). Whereas most CSV parsers parse `String` data, this library never converts binary data into non-binary data. It's fast because it never creates Numbers, Strings, Arrays or Objects -- only binary representations of the line and cell values in the CSV, meaning the JS VM spends less time doing things like decoding UTF8 strings and goign back and forth between C++ and JS.
 
 By default it will only split lines, but you can use the provided `.line` and `.cell` methods to parse the cells and cell values.
 
