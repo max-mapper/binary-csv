@@ -1,0 +1,28 @@
+{
+  "name": "binary-csv",
+  "version": "0.0.1",
+  "description": "A fast CSV binary data parser written in javascript",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test/test.js"
+  },
+  "author": "max ogden",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "through": "~2.3.4",
+    "bops": "0.0.6"
+  },
+  "devDependencies": {
+    "tape": "~1.1.1"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/maxogden/binary-csv.git"
+  },
+  "bugs": {
+    "url": "https://github.com/maxogden/binary-csv/issues"
+  }
+}
