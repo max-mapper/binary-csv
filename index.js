@@ -125,7 +125,7 @@ function CSV(lineDelim, cellDelim) {
     // second loop fills the val buffer with data
     for (var i = 0, y = 0; i < buf.length; i++) {
       if (buf[i] === quote && buf[i + 1] === quote) i++
-      bops.writeUInt8(val, buf[i], y)
+      val[y] = buf[i]
       y++
     }
     return val
