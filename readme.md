@@ -8,6 +8,8 @@ Consumes `Buffer` in node or `Uint8Array` in the browser (thanks to [bops](https
 
 By default it will only split lines, but you can use the provided `.line` and `.cell` methods to parse the cells and cell values.
 
+Parses a 55 million line, 5.18GB CSV in a little over 1 minute.
+
 ### usage
 
 ### binaryCSV([lineDelim, cellDelim])
