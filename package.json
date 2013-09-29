@@ -1,10 +1,13 @@
 {
   "name": "binary-csv",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A fast CSV binary data parser written in javascript",
   "main": "index.js",
   "scripts": {
     "test": "node test/test.js"
+  },
+  "bin": {
+    "bcsv": "cli.js"
   },
   "author": "max ogden",
   "license": "BSD-2-Clause",

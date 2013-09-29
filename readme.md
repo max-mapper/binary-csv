@@ -12,7 +12,9 @@ Parses a 55 million line, 5.18GB CSV in a little over 1 minute.
 
 ### usage
 
-### binaryCSV([lineDelim, cellDelim])
+You can use it two ways: programmatically in Node programs, or from the command line.
+
+##### binaryCSV([lineDelim, cellDelim])
 
 ```
 var binaryCSV = require('binary-csv')
@@ -47,6 +49,27 @@ var cell = parser.cell(new Buffer('"this is a ""escaped"" csv cell value"'))
 ```
 
 See `test/test.js` for more examples.
+
+### CLI API
+
+To use on the command line install it globally:
+
+```
+npm install binary-csv -g
+```
+
+This should add the `bcsv` command to your `$PATH`.
+
+Then, you either pipe data into it or give it a filename:
+
+```
+# pipe data in
+cat some_data.csv | bcsv
+# pass a filename
+bcsv some_data.csv
+# tell bcsv to read from + wait on stdin
+bcsv -
+```
 
 ### run the test suite
 
