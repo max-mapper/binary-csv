@@ -1,7 +1,6 @@
 var test = require('tape')
 var fs = require('fs')
 var path = require('path')
-var concat = require('concat-stream')
 var eol = require('os').EOL
 var bops = require('bops')
 var binaryCSV = require('..')
