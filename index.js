@@ -106,6 +106,7 @@ function CSV(lineDelim, cellDelim) {
       }
     }
     if (offset < buf.length) cells.push(bops.subarray(buf, offset, buf.length))
+    if (buf[buf.length - 1] === comma) cells.push(bops.create(0))
     return cells
   }
   
