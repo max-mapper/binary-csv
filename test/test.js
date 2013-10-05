@@ -128,6 +128,24 @@ test('geojson', function(t) {
   }
 })
 
+test('empty_columns', function(t) {
+  var parser = collect('empty_columns.csv', verify)
+  function verify(err, lines) {
+    t.false(err, 'no err')
+    function testLine(buffer) {
+      var line = parser.line(buffer)
+      t.equal(line.length, 3, "Split into three columns")
+      t.ok(/^2007-01-0\d$/.test(line[0]), "First column is a date")
+      t.ok(line[1], "Empty column is in line")
+      t.equal(line[1] && line[1].length, 0, "Empty column is empty")
+      t.ok(line[2], "Empty column is in line")
+      t.equal(line[2] && line[2].length, 0, "Empty column is empty")
+    }
+    lines.forEach(testLine)
+    t.end()
+  }
+})
+
 // helpers
 
 function fixture(name) {
