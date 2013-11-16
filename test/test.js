@@ -155,9 +155,7 @@ test('csv-spectrum', function(t) {
       var parser = binaryCSV({ json: true })
       var collector = concat(function(objs) {
         var expected = JSON.parse(d.json)
-        for (var i = 0; i < objs.length; i++) {
-          t.equal(JSON.stringify(objs[i]), JSON.stringify(expected[i]), d.name)
-        }
+        t.equal(JSON.stringify(objs), JSON.stringify(expected), d.name)
         done()
       })
       parser.pipe(collector)

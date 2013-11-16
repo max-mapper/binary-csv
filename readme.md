@@ -14,7 +14,7 @@ Parses a 55 million line, 5.18GB CSV in a little over 1 minute.
 
 You can use it two ways: programmatically in Node programs, or from the command line.
 
-##### binaryCSV([lineDelim, cellDelim])
+##### binaryCSV([options])
 
 ```
 var binaryCSV = require('binary-csv')
@@ -23,12 +23,23 @@ var parser = binaryCSV()
 
 `parser` is a duplex stream -- you can pipe data to it and it will emit a buffer for each line in the CSV
 
+#### default options
+
+```
+{
+  separator: ',',
+  newline: '\n',
+  detectNewlines: true,
+  json: false
+}
+```
+
+if `json` is truthy then the parser stream will emit fully decoded JSON objects representing each row of the csv (combined with the header row)
+
 ```
 fs.createReadStream('data.csv').pipe(parser)
   .on('data', function(line) { })
 ```
-
-You can optionall pass in line and cell delimiters -- the defaults are the current operating systems newline delimiter (from `require('os').EOL`) and `,`, respectively.
 
 ### parser.line(buf)
 

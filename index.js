@@ -1,6 +1,5 @@
 var through = require('through')
 var bops = require('bops')
-var os = require('os')
 var extend = require('extend')
 
 module.exports = CSV
@@ -9,6 +8,11 @@ var quote = bops.from('"')[0] // 22
 function CSV(opts) {
   if (!(this instanceof CSV)) return new CSV(opts)
   if (!opts) opts = {}
+  
+  var newline
+  var buffered
+  var headers
+  var inQuotes = false
   
   var defaults = {
     separator: ',',
@@ -19,13 +23,13 @@ function CSV(opts) {
   
   opts = extend(defaults, opts)
   
-  var newline = bops.from(opts.newline)
-  var comma = bops.from(opts.separator || ',')[0]
-  var buffered
-  var headers
-  var inQuotes = false
+  if (opts.detectNewlines) delete opts.newline
+  else newline = bops.from(opts.newline)
   
+  var comma = bops.from(opts.separator || ',')[0]
+
   var stream = through(write, end)
+  
   stream.line = line
   stream.cell = cell
   stream.options = opts
@@ -40,6 +44,25 @@ function CSV(opts) {
       buffered = undefined
     }
     
+    if (!newline) {
+      for (var i = 0; i < buf.length; i++) {
+        if (buf[i] === 13) { // \r
+          if (i === buf.length) return
+          if (buf[i + 1] === 10) { // \n
+            newline = bops.from('\r\n')
+            break
+          } else {
+            newline = bops.from('\r')
+            break
+          }
+        } else if (buf[i] === 10) { // \n
+          if (i === buf.length) return
+          newline = bops.from('\n')
+          break
+        }
+      }
+    }
+        
     while (buf) {
       var idx = firstMatch(buf, offset, newline)
       if (idx) {
