@@ -115,14 +115,14 @@ test('geojson', function(t) {
   function verify(err, lines) {
     t.false(err, 'no err')
     var lineObj = {
-			"type": "LineString",
-			"coordinates": [
-				[102.0, 0.0],
-				[103.0, 1.0],
-				[104.0, 0.0],
-				[105.0, 1.0]
-			]
-		}
+      "type": "LineString",
+      "coordinates": [
+        [102.0, 0.0],
+        [103.0, 1.0],
+        [104.0, 0.0],
+        [105.0, 1.0]
+      ]
+    }
     var cells2 = parser.line(lines[2])
     var lineString = parser.cell(cells2[3])
     t.equals(JSON.stringify(lineObj), JSON.stringify(JSON.parse(lineString)), 'linestrings match')
