@@ -3,6 +3,8 @@ var fs = require('fs')
 var path = require('path')
 var eol = require('os').EOL
 var bops = require('bops')
+var spectrum = require('csv-spectrum')
+var concat = require('concat-stream')
 var binaryCSV = require('..')
 var read = fs.createReadStream
 
@@ -144,6 +146,29 @@ test('empty_columns', function(t) {
     lines.forEach(testLine)
     t.end()
   }
+})
+
+test('csv-spectrum', function(t) {
+  spectrum(function(err, data) {
+    var pending = data.length
+    data.map(function(d) {
+      var parser = binaryCSV({ json: true })
+      var collector = concat(function(objs) {
+        var expected = JSON.parse(d.json)
+        for (var i = 0; i < objs.length; i++) {
+          t.equal(JSON.stringify(objs[i]), JSON.stringify(expected[i]), d.name)
+        }
+        done()
+      })
+      parser.pipe(collector)
+      parser.write(d.csv)
+      parser.end()
+    })
+    function done() {
+      pending--
+      if (pending === 0) t.end()
+    }
+  })
 })
 
 // helpers

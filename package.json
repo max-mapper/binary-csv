@@ -1,6 +1,6 @@
 {
   "name": "binary-csv",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "A fast CSV binary data parser written in javascript",
   "main": "index.js",
   "scripts": {
@@ -13,10 +13,13 @@
   "license": "BSD-2-Clause",
   "dependencies": {
     "through": "~2.3.4",
-    "bops": "0.0.6"
+    "bops": "0.0.6",
+    "extend": "~1.2.1"
   },
   "devDependencies": {
-    "tape": "~1.1.1"
+    "tape": "~1.1.1",
+    "csv-spectrum": "~0.1.0",
+    "concat-stream": "~1.2.0"
   },
   "directories": {
     "test": "test"

@@ -1,20 +1,34 @@
 var through = require('through')
 var bops = require('bops')
 var os = require('os')
+var extend = require('extend')
 
 module.exports = CSV
 var quote = bops.from('"')[0] // 22
 
-function CSV(lineDelim, cellDelim) {
-  if (!(this instanceof CSV)) return new CSV(lineDelim, cellDelim)
-  var newline = bops.from(lineDelim || os.EOL)
-  var comma = bops.from(cellDelim || ',')[0]
+function CSV(opts) {
+  if (!(this instanceof CSV)) return new CSV(opts)
+  if (!opts) opts = {}
+  
+  var defaults = {
+    separator: ',',
+    newline: '\n',
+    detectNewlines: true,
+    json: false
+  }
+  
+  opts = extend(defaults, opts)
+  
+  var newline = bops.from(opts.newline)
+  var comma = bops.from(opts.separator || ',')[0]
   var buffered
+  var headers
   var inQuotes = false
   
   var stream = through(write, end)
   stream.line = line
   stream.cell = cell
+  stream.options = opts
   
   return stream
   
@@ -35,7 +49,7 @@ function CSV(lineDelim, cellDelim) {
           buf = undefined
           offset = idx
         } else {
-          this.queue(line)
+          queue(line)
           offset = idx + newline.length
         }
       } else {
@@ -50,8 +64,26 @@ function CSV(lineDelim, cellDelim) {
   }
   
   function end() {
-    if (buffered) this.queue(buffered)
-    this.queue(null)
+    if (buffered) queue(buffered)
+    queue(null)
+  }
+  
+  function queue(lineBuffer) {
+    if (opts.json && lineBuffer) {
+      var cells = line(lineBuffer)
+      for (var i = 0; i < cells.length; i++) {
+        cells[i] = cell(cells[i]).toString()
+      }
+      if (!headers) return headers = cells
+      lineBuffer = zip(headers, cells)
+    }
+    stream.queue(lineBuffer)
+  }
+  
+  function zip(headers, cells) {
+    var obj = {}
+    for (var i = 0; i < headers.length; i++) obj[headers[i]] = cells[i]
+    return obj
   }
   
   function firstMatch(buf, offset) {
@@ -114,17 +146,24 @@ function CSV(lineDelim, cellDelim) {
     if (buf[0] === quote && buf[buf.length - 1] === quote) buf = bops.subarray(buf, 1, buf.length - 1)
     
     // TODO way to implement this without looping twice?
+
+    var start = 0
+    var end = buf.length
+    if (buf[start] === quote && buf[end - 1] === quote) {
+      start++
+      end--
+    }
     
     var cellLength = 0
     // first loop is to figure out exact length of cell after escaped quotes are removed
-    for (var i = 0; i < buf.length; i++) {
+    for (var i = start; i < end; i++) {
       if (buf[i] === quote && buf[i + 1] === quote) i++ // ""
       cellLength++
     }
     var val = bops.create(cellLength)
      
     // second loop fills the val buffer with data
-    for (var i = 0, y = 0; i < buf.length; i++) {
+    for (var i = start, y = 0; i < end; i++) {
       if (buf[i] === quote && buf[i + 1] === quote) i++
       val[y] = buf[i]
       y++
