@@ -1,6 +1,6 @@
 {
   "name": "binary-csv",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A fast CSV binary data parser written in javascript",
   "main": "index.js",
   "scripts": {

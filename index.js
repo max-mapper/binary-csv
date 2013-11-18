@@ -12,7 +12,7 @@ function CSV(opts) {
   var newline
   var buffered
   var headers
-  var inQuotes = false
+  var inQuotes
   
   var defaults = {
     separator: ',',
@@ -36,7 +36,10 @@ function CSV(opts) {
   
   return stream
   
-  function write(buf) { 
+  function write(buf) {
+    
+    inQuotes = false
+    
     var offset = 0
         
     if (buffered) {
@@ -64,7 +67,7 @@ function CSV(opts) {
     }
         
     while (buf) {
-      var idx = firstMatch(buf, offset, newline)
+      var idx = nextLine(buf, offset)
       if (idx) {
         var line = bops.subarray(buf, offset, idx)
         if (idx === buf.length) {
@@ -109,7 +112,7 @@ function CSV(opts) {
     return obj
   }
   
-  function firstMatch(buf, offset) {
+  function nextLine(buf, offset) {
     var i = offset
     if (offset >= buf.length) return false
     for (var i = offset; i < buf.length; i++) {
