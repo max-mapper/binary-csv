@@ -16,7 +16,7 @@ You can use it two ways: programmatically in Node programs, or from the command 
 
 ##### binaryCSV([options])
 
-```
+```js
 var binaryCSV = require('binary-csv')
 var parser = binaryCSV()
 ```
@@ -25,7 +25,7 @@ var parser = binaryCSV()
 
 #### default options
 
-```
+```js
 {
   separator: ',',
   newline: '\n',
@@ -36,7 +36,7 @@ var parser = binaryCSV()
 
 if `json` is truthy then the parser stream will emit fully decoded JSON objects representing each row of the csv (combined with the header row)
 
-```
+```js
 fs.createReadStream('data.csv').pipe(parser)
   .on('data', function(line) { })
 ```
@@ -45,7 +45,7 @@ fs.createReadStream('data.csv').pipe(parser)
 
 Parses cells from a line buffer. Returns an array of cell buffers.
 
-```
+```js
 var cells = parser.line(new Buffer('hello,world'))
 // returns equivalent of [new Buffer('hello'), new Buffer('world')]
 ```
@@ -54,7 +54,7 @@ var cells = parser.line(new Buffer('hello,world'))
 
 Parses a single cell buffer, returns the unescaped data in a buffer.
 
-```
+```js
 var cell = parser.cell(new Buffer('"this is a ""escaped"" csv cell value"'))
 // returns equivalent of new Buffer('this is a "escaped" csv cell value")
 ```
@@ -65,26 +65,26 @@ See `test/test.js` for more examples.
 
 To use on the command line install it globally:
 
-```
-npm install binary-csv -g
+```bash
+$ npm install binary-csv -g
 ```
 
 This should add the `bcsv` command to your `$PATH`.
 
 Then, you either pipe data into it or give it a filename:
 
-```
+```bash
 # pipe data in
-cat some_data.csv | bcsv
+$ cat some_data.csv | bcsv
 # pass a filename
-bcsv some_data.csv
+$ bcsv some_data.csv
 # tell bcsv to read from + wait on stdin
-bcsv -
+$ bcsv -
 ```
 
 ### run the test suite
 
-```
-npm install
-npm test
+```bash
+$ npm install
+$ npm test
 ```
