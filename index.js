@@ -98,7 +98,7 @@ function CSV(opts) {
     if (opts.json && lineBuffer) {
       var cells = line(lineBuffer)
       for (var i = 0; i < cells.length; i++) {
-        cells[i] = cell(cells[i]).toString()
+        cells[i] = bops.to(cell(cells[i]))
       }
       if (!headers) return headers = cells
       lineBuffer = zip(headers, cells)
