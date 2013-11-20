@@ -14,7 +14,7 @@ Parses a 55 million line, 5.18GB CSV in a little over 1 minute.
 
 See a demo running in the browser on RequireBin:
 
-![http://requirebin.com/?gist=7555664](http://requirebin.com/badge.png)
+[![http://requirebin.com/?gist=7555664](http://requirebin.com/badge.png)](http://requirebin.com/?gist=7555664)
 
 You can also load any CSV on the internet via querystring, e.g.:
 
