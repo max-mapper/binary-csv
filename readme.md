@@ -10,6 +10,18 @@ By default it will only split lines, but you can use the provided `.line` and `.
 
 Parses a 55 million line, 5.18GB CSV in a little over 1 minute.
 
+### demo
+
+See a demo running in the browser on RequireBin:
+
+![http://requirebin.com/?gist=7555664](http://requirebin.com/badge.png)
+
+You can also load any CSV on the internet via querystring, e.g.:
+
+http://requirebin.com/embed?gist=7555664&csv=http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.csv
+
+Huge CSVs might be slow to render because of the terminal renderer used in the demo.
+
 ### usage
 
 You can use it two ways: programmatically in Node programs, or from the command line.
