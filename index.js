@@ -41,7 +41,7 @@ function CSV(opts) {
     inQuotes = false
     
     var offset = 0
-        
+     
     if (buffered) {
       buf = bops.join([buffered, buf])
       buffered = undefined
@@ -82,7 +82,7 @@ function CSV(opts) {
         if (offset >= buf.length) {
           buffered = undefined
         } else {
-          buffered = buf
+          buffered = bops.subarray(buf, offset, buf.length)
         }
         buf = undefined
       }
@@ -141,6 +141,8 @@ function CSV(opts) {
     }
 
     var idx = i + newline.length - 1
+    if (idx > buf.length) return false
+    
     return idx
   }
 
