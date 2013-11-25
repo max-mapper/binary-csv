@@ -65,9 +65,10 @@ function CSV(opts) {
         }
       }
     }
-        
+    
     while (buf) {
-      var idx = nextLine(buf, offset)
+      var idx
+      if (newline) idx = nextLine(buf, offset)
       if (idx) {
         var line = bops.subarray(buf, offset, idx)
         if (idx === buf.length) {
