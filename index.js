@@ -1,9 +1,8 @@
 var through = require('through')
-var bops = require('bops')
 var extend = require('extend')
 
 module.exports = CSV
-var quote = bops.from('"')[0] // 22
+var quote = new Buffer('"')[0] // 22
 
 function CSV(opts) {
   if (!(this instanceof CSV)) return new CSV(opts)
@@ -24,9 +23,9 @@ function CSV(opts) {
   opts = extend(defaults, opts)
   
   if (opts.detectNewlines) delete opts.newline
-  else newline = bops.from(opts.newline)
+  else newline = new Buffer(opts.newline)
   
-  var comma = bops.from(opts.separator || ',')[0]
+  var comma = new Buffer(opts.separator || ',')[0]
 
   var stream = through(write, end)
   
@@ -43,7 +42,7 @@ function CSV(opts) {
     var offset = 0
      
     if (buffered) {
-      buf = bops.join([buffered, buf])
+      buf = Buffer.concat([buffered, buf])
       buffered = undefined
     }
     
@@ -52,15 +51,15 @@ function CSV(opts) {
         if (buf[i] === 13) { // \r
           if (i === buf.length) return
           if (buf[i + 1] === 10) { // \n
-            newline = bops.from('\r\n')
+            newline = new Buffer('\r\n')
             break
           } else {
-            newline = bops.from('\r')
+            newline = new Buffer('\r')
             break
           }
         } else if (buf[i] === 10) { // \n
           if (i === buf.length) return
-          newline = bops.from('\n')
+          newline = new Buffer('\n')
           break
         }
       }
@@ -70,7 +69,7 @@ function CSV(opts) {
       var idx
       if (newline) idx = nextLine(buf, offset)
       if (idx) {
-        var line = bops.subarray(buf, offset, idx)
+        var line = buf.slice(offset, idx)
         if (idx === buf.length) {
           buffered = line
           buf = undefined
@@ -83,7 +82,7 @@ function CSV(opts) {
         if (offset >= buf.length) {
           buffered = undefined
         } else {
-          buffered = bops.subarray(buf, offset, buf.length)
+          buffered = buf.slice(offset, buf.length)
         }
         buf = undefined
       }
@@ -99,7 +98,7 @@ function CSV(opts) {
     if (opts.json && lineBuffer) {
       var cells = line(lineBuffer)
       for (var i = 0; i < cells.length; i++) {
-        cells[i] = bops.to(cell(cells[i]))
+        cells[i] = cell(cells[i]).toString()
       }
       if (!headers) return headers = cells
       lineBuffer = zip(headers, cells)
@@ -161,18 +160,18 @@ function CSV(opts) {
         continue
       }
       if (buf[i] === comma && !inQuotes) {
-        var cell = bops.subarray(buf, offset, i)
+        var cell = buf.slice(offset, i)
         cells.push(cell)
         offset = i + 1
       }
     }
-    if (offset < buf.length) cells.push(bops.subarray(buf, offset, buf.length))
-    if (buf[buf.length - 1] === comma) cells.push(bops.create(0))
+    if (offset < buf.length) cells.push(buf.slice(offset, buf.length))
+    if (buf[buf.length - 1] === comma) cells.push(new Buffer(0))
     return cells
   }
   
   function cell(buf) {
-    if (buf[0] === quote && buf[buf.length - 1] === quote) buf = bops.subarray(buf, 1, buf.length - 1)
+    if (buf[0] === quote && buf[buf.length - 1] === quote) buf = buf.slice(1, buf.length - 1)
     
     // TODO way to implement this without looping twice?
 
@@ -189,7 +188,7 @@ function CSV(opts) {
       if (buf[i] === quote && buf[i + 1] === quote) i++ // ""
       cellLength++
     }
-    var val = bops.create(cellLength)
+    var val = new Buffer(cellLength)
      
     // second loop fills the val buffer with data
     for (var i = start, y = 0; i < end; i++) {
