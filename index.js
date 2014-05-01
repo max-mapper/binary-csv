@@ -1,4 +1,4 @@
-var through = require('through')
+var through = require('through2')
 var extend = require('extend')
 
 module.exports = CSV
@@ -22,12 +22,15 @@ function CSV(opts) {
   
   opts = extend(defaults, opts)
   
+  // alias 'delimiter' to 'newline'
+  if (opts.delimiter) opts.newline = opts.delimiter
+  
   if (opts.detectNewlines) delete opts.newline
   else newline = new Buffer(opts.newline)
   
   var comma = new Buffer(opts.separator || ',')[0]
 
-  var stream = through(write, end)
+  var stream = through.obj(write, end)
   
   stream.line = line
   stream.cell = cell
@@ -35,7 +38,7 @@ function CSV(opts) {
   
   return stream
   
-  function write(buf) {
+  function write(buf, enc, next) {
     
     inQuotes = false
     
@@ -87,6 +90,8 @@ function CSV(opts) {
         buf = undefined
       }
     }
+    
+    next()
   }
   
   function end() {
@@ -103,7 +108,7 @@ function CSV(opts) {
       if (!headers) return headers = cells
       lineBuffer = zip(headers, cells)
     }
-    stream.queue(lineBuffer)
+    stream.push(lineBuffer)
   }
   
   function zip(headers, cells) {
