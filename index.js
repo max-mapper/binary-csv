@@ -22,6 +22,10 @@ function CSV(opts) {
   
   opts = extend(defaults, opts)
   
+  if (opts.headers) {
+    headers = opts.headers
+  }
+
   // alias 'delimiter' to 'newline'
   if (opts.delimiter) opts.newline = opts.delimiter
   
