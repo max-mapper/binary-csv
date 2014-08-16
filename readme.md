@@ -1,5 +1,7 @@
 # binary-csv
 
+# Update: you should use [https://www.npmjs.org/package/csv-parser](csv-parser) instead, it has the same API as this but is faster
+
 A fast CSV parser written in javascript.
 
 [![NPM](https://nodei.co/npm/binary-csv.png)](https://nodei.co/npm/binary-csv/)
