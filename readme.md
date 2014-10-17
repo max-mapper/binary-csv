@@ -1,6 +1,6 @@
 # binary-csv
 
-# Update: you should use [https://www.npmjs.org/package/csv-parser](csv-parser) instead, it has the same API as this but is faster
+# Update: you should use [csv-parser](https://www.npmjs.org/package/csv-parser) instead, it has the same API as this but is faster
 
 A fast CSV parser written in javascript.
 
