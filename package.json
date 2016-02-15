@@ -16,9 +16,10 @@
     "through2": "^0.4.1"
   },
   "devDependencies": {
-    "tape": "~1.1.1",
+    "bops": "^1.0.0",
+    "concat-stream": "~1.2.0",
     "csv-spectrum": "~0.2.0",
-    "concat-stream": "~1.2.0"
+    "tape": "~1.1.1"
   },
   "directories": {
     "test": "test"
